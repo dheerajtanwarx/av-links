@@ -1,0 +1,70 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    color-scheme: light;
+  }
+
+  html {
+    -webkit-text-size-adjust: 100%;
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-cream font-sans text-maroon antialiased;
+    min-height: 100dvh;
+  }
+
+  /* Warm ambient glow + subtle Jaipuri jaali pattern behind everything.
+     Kept on a fixed, pointer-inert layer so it never affects layout/LCP. */
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background-image:
+      radial-gradient(
+        60% 50% at 50% 0%,
+        rgba(226, 115, 92, 0.16),
+        transparent 70%
+      ),
+      radial-gradient(
+        50% 40% at 100% 100%,
+        rgba(194, 154, 69, 0.14),
+        transparent 70%
+      );
+    background-repeat: no-repeat, no-repeat;
+  }
+
+  /* Fade the repeating pattern without washing out the gradients. */
+  body::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background: url("/pattern.svg") repeat;
+    background-size: 80px 80px;
+    opacity: 0.035;
+  }
+}
+
+@layer utilities {
+  .text-pretty {
+    text-wrap: pretty;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
